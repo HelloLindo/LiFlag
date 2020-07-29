@@ -1,0 +1,94 @@
+﻿* {
+    font-family: "黑体", SimHei, Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #171250;
+}
+
+body {
+    font-size: 62.5%;
+    background-color: #eddbdb;
+}
+
+.flag_frame {
+    margin: 10px 0 30px 0;
+}
+
+#flag_title,
+#create_flag,
+#my_flag {
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+    outline: none;
+}
+
+#create_flag,
+#my_flag {
+    margin-top: 10px;
+}
+
+#flag_title img {
+    margin: 0 auto;
+    width: 90%;
+}
+
+#create_flag img,
+#my_flag img {
+    margin: 0 auto;
+    width: 65%;
+    cursor: pointer;
+}
+
+#notice {
+    margin-top: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+#notice p {
+    margin: 0 auto;
+    width: 65%;
+    font-family: "黑体", SimHei, Arial;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: rgba(182, 39, 53, 0.7);
+    line-height: 25px;
+}
+
+#ad {
+    display: none;
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+}
+
+#ad img {
+    margin: 0 auto;
+    width: 265px;
+    height: 85px;
+}
+
+#bottom {
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+}
+
+#bottom p {
+    margin: 0 auto;
+    width: 90%;
+    font-size: 0.7rem;
+    color: rgba(1, 1, 1, 0.6);
+    line-height: 20px;
+}
+
+#author {
+    /* padding: 12px 0; */
+    font-size: 0.35rem !important;
+    color: rgba(190, 164, 164, 0.75) !important;
+    /* color: #bea4a4;
+    opacity: 0.75; */
+}
