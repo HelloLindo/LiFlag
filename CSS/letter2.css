@@ -1,0 +1,261 @@
+* {
+    font-family: "黑体", SimHei, Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #171250;
+}
+
+body {
+    font-size: 62.5%;
+    background-color: #eddbdb;
+    width: 100%;
+    text-align: center;
+}
+
+.letter_frame {
+    margin: 0 auto;
+    width: 22.5rem;
+    height: 42rem;
+    text-align: center;
+    overflow: hidden;
+}
+
+#letter {
+    margin: 20px auto;
+    background-image: url("http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/letter_paper.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 95%;
+    height: 600px;
+    text-align: center;
+}
+
+#profile {
+    width: 70px;
+    height: 70px;
+    /* background-color: red; */
+    overflow: hidden;
+    position: relative;
+    top: 1.28rem;
+    left: 1.88rem;
+}
+
+#profile img {
+    width: 100%;
+    height: 100%;
+}
+
+#letter_textarea {
+    margin: 1.95rem auto 0 auto;
+    width: 80%;
+}
+
+#letter_textarea textarea {
+    width: 100%;
+    height: 275px;
+    outline: none;
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    font-family: "黑体", SimHei, Arial;
+    font-size: 1.2rem;
+    color: #171250;
+    line-height: 31.5px;
+    /* overflow-y: hidden; */
+    overflow-y: scroll;
+}
+
+#inscribe {
+    margin-top: 0.5rem;
+}
+
+#inscribe p,
+#inscribe p span {
+    font-family: "黑体", SimHei, Arial;
+    font-size: 0.85rem;
+}
+
+#name,
+#date {
+    padding-right: 5.5rem;
+    text-align: right;
+}
+
+#date {
+    padding-top: 0.2rem;
+    padding-right: 5.5rem;
+}
+
+#create_button,
+#home_button {
+    margin-top: 0.18rem;
+    width: 100%;
+}
+
+#create_button button {
+    outline: none;
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    background-image: url("http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/create_button.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 100px;
+    width: 100px;
+    position: relative;
+    left: 0.2rem;
+    bottom: 0.2rem;
+}
+
+#home_button button {
+    outline: none;
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    background-image: url("https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/new_back_button.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 100px;
+    width: 100px;
+    position: relative;
+    left: 0.2rem;
+    bottom: 0.2rem;
+}
+
+#bottom {
+    margin-top: 2.5rem;
+    width: 100%;
+    text-align: center;
+}
+
+#bottom p {
+    margin: 0 auto;
+    width: 100%;
+    font-size: 0.8rem;
+    color: rgba(1, 1, 1, 0.6);
+    /* line-height: 20px; */
+    text-align: center;
+    /* position: relative;
+    left: 45px; */
+}
+
+#author {
+    /* margin: 12px auto !important; */
+    font-size: 0.45rem !important;
+    color: rgba(190, 164, 164, 0.75) !important;
+}
+
+#postmark {
+    /* display: none; */
+    width: 100%;
+    text-align: center;
+    position: relative;
+    bottom: 38rem;
+    right: 1rem;
+}
+
+#postmark img {
+    margin: 0 auto;
+    width: 12rem;
+}
+
+
+/* *********************** */
+
+#flag_authority {
+    display: none;
+    float: left;
+    width: 100px;
+    padding: 0 5px 8px 5px;
+    position: relative;
+    left: 18px;
+    bottom: 50px;
+}
+
+#flag_authority button {
+    width: 100%;
+    height: 60px;
+    background-image: url("https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/before_authority_button.png");
+    outline: none;
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+#support_button {
+    float: right;
+    width: 100px;
+    padding: 0 5px 8px 5px;
+    position: relative;
+    right: 18px;
+    bottom: 50px;
+}
+
+#support_button button {
+    width: 100%;
+    height: 60px;
+    background-image: url("https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/before_support_button.png");
+    outline: none;
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+#support_button button p {
+    width: 100%;
+    position: relative;
+    left: 13px;
+    bottom: 5px;
+    color: #dc505b;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+
+/* 警告框 */
+
+#alert_div {
+    z-index: 999;
+    float: left;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(166, 166, 166, 0.6);
+    text-align: center;
+}
+
+#alert_main {
+    position: fixed;
+    top: 35%;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    width: 240px;
+    height: 170px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+#alert_main img {
+    width: 60px;
+    height: 60px;
+    margin-top: 5%;
+}
+
+#alert_content {
+    margin: 0;
+    margin-bottom: 30px;
+}
+
+#alert_main button {
+    width: 40%;
+    height: 15%;
+    color: white;
+    background-color: rgb(24, 138, 246);
+    outline: none;
+    border-radius: 5px;
+    border: none;
+}

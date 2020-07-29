@@ -6,67 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>荔Flag 『深大荔知』</title>
-    <link rel="stylesheet" href="../CSS/letter2.css" type="text/css">
-    <script src="https://cdn.bootcss.com/vConsole/3.2.0/vconsole.min.js"></script>
+    <link rel="stylesheet" href="../CSS/index.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+
 </head>
 
 <body>
-
-    <div class="letter_frame">
-
-        <div id="letter">
-            <div id="profile">
-                <img alt="头像" src="http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/profile.png">
-            </div>
-
-            <div id="letter_textarea">
-                <textarea name="letter_text" placeholder="写下你的Flag吧~" autofocus="autofocus"></textarea>
-            </div>
-
-            <div id="inscribe">
-                <p id="name">
-                    From:
-                    <span>正在获取用户名称</span>
-                </p>
-                <p id="date">
-                    <span>正在获取时间</span>
-                </p>
-            </div>
-            <div id="create_button">
-                <button></button>
-            </div>
-            <div id="bottom">
-                <p>如需帮助或反馈&nbsp;请加小知微信：WithSzu</p>
-                <p>Copyright&copy;深大荔知</p>
-                <!-- <p id="author">
-                    Lindo &amp; J1MMY &amp; ckjim &amp; 佚名
-                </p> -->
-            </div>
+    <div id="app" class="flag_frame">
+        <!-- https://blog.csdn.net/u011019141/article/details/52527373  弹框 -->
+        <div id="flag_title">
+            <span v-html="img"></span>
         </div>
 
-        <!-- <div id="postmark">
-            <img alt="邮戳" src="http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/postmark.png">
+        <div id="create_flag">
+            <a href="#">
+                <img id="create" alt="立个Flag按钮" src="http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/create_flag.png">
+            </a>
+        </div>
+
+        <div id="my_flag">
+            <a href="#">
+                <img id="my" alt="我的Flag按钮" src="http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/my_flag.png">
+            </a>
+        </div>
+
+        <div id="flag_square">
+            <a href="#">
+                <img id="square" alt="Flag广场按钮" src="https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/flag_square.png">
+            </a>
+        </div>
+
+        <div id="notice">
+            <p id="notice_text">
+                {{ text }}
+                <!-- <p id="author">Lindo &amp; J1MMY &amp; ckjim &amp; 佚名</p> -->
+            </p>
+        </div>
+
+        <!-- <div id="ad">
+            <img src="http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/ad.png">
         </div> -->
 
-    </div>
-
-    <div id="alert_div" style="display: none;">
-        <div id="alert_main">
-            <img src="https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/alert_icon.png">
-            <p id="alert_content">出错啦o(╥﹏╥)o</p>
-            <button>确 定</button>
+        <div id="bottom">
+            <span v-html="text_html"></span>
         </div>
+
+        <div id="alert_div" style="display: none;">
+            <div id="alert_main">
+                <img src="https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/alert_icon.png">
+                <p id="alert_content">出错啦o(╥﹏╥)o</p>
+                <button>确 定</button>
+            </div>
+        </div>
+
     </div>
-
-    <!-- <script type="text/javascript">
-        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-        document.write(unescape("%3Cscript src='" + _bdhmProtocol +
-            "hm.baidu.com/h.js%3F55471b6aff2ffa1f9e2ac5cbe755ef91' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=65455601" charset="UTF-8"></script> -->
-
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script> -->
+    <!-- <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> -->
     <script>
         var cookie = {
             setCookie: function(key, val, time) { //设置cookie方法
@@ -104,11 +101,15 @@
             $("#alert_div").show();
         }
         $("#alert_main button").click(function() {
+            if ($("#alert_main button").text() == "好的") {
+                window.location.href = "../HTML/old_flag.html";
+            }
             $("#alert_div").hide();
         })
     </script>
 
-    <!-- <script src="path/to/vconsole.min.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/vConsole/3.2.0/vconsole.min.js"></script>
+    <script src="path/to/vconsole.min.js"></script>
         <script>
             // init vConsole
             var  vConsole  =  new  VConsole();  
@@ -116,102 +117,133 @@
         </script> -->
 
     <script>
-        var uid = -1;
-        $(document).ready(function() {
-            if (cookie.getCookie("flag2Token") == undefined || cookie.getCookie("flag2Token") == null || cookie.getCookie("flag2Token") == "") {
-                if (confirm("要登录了才能立Flag哦~快点击确定到首页登录吧~")) {
-                    window.location.href = "./home.html";
-                }
+        var flag_title = new Vue({
+            el: '#flag_title',
+            data: {
+                img: '<img alt="荔Flag标题" src="http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/flag_title.png">'
             }
+        })
+        var notice_text = new Vue({
+            el: '#notice_text',
+            data: {
+                text: '注：每人只有一次立Flag机会。学期结束时，你的Flag会完成得怎样呢？'
+            }
+        })
+        var bottom = new Vue({
+            el: '#bottom',
+            data: {
+                text_html: '<p>如需帮助或反馈&nbsp;请加小知微信：WithSzu<br> Copyright&copy;深大荔知<br></p><br>'
+            }
+        })
 
-            var myDate = new Date();
-            var year = myDate.getFullYear(); //获取当前年
-            var month = myDate.getMonth() + 1; //获取当前月
-            var day = myDate.getDate(); //获取当前日
-            $("#date span").text(year + "." + month + "." + day);
+        // 以下为逻辑js代码
+        $("#flag_square a img").click(function() {
+            window.location.href = "../HTML/flag_square.html";
+        })
+
+        var setJump = function(token) {
             $.ajax({
                 async: false,
-                url: "http://lizhi.szer.me/zhanhong/envelope/getinfo.php",
+                url: "http://lizhi.szer.me/zhanhong/envelope/getStatus.php",
                 type: "GET",
                 data: {
-                    token: cookie.getCookie("flag2Token")
+                    token: token
                 },
                 dataType: "jsonp",
                 jsonp: "callback",
                 jsonpCallback: "GetMyFlags",
                 success: function(result, status) {
-                    if (result.retmsg == "获取成功") {
-                        $("#profile img").attr("src", result.retdata[0].headimgurl);
-                        $("#name span").text(result.retdata[0].nickname);
-                        uid = result.retdata[0].id;
+                    var userState = 0;
+                    if (result.retdata.newold == 1) {
+                        userState = 1;
                     } else {
-                        callAlert("获取个人信息出错啦，请联系小知(WithSzu)");
+                        userState = 0;
                     }
-
-                },
-                error: function() {
-                    callAlert("获取个人信息出错啦，请联系小知(WithSzu)");
-                    console.log("WriteNewFlagError!");
-                }
-            })
-            initShare();
-        });
-
-
-
-        $("#create_button button").click(function() {
-            var flag_content = $("#letter_textarea textarea").val();
-            if (flag_content == "") {
-                alert("至少要写点儿什么才能算立下Flag哦~");
-            } else {
-                if (confirm("是否确定立下Flag，确定后无法修改！")) {
-                    var current_url = document.location.href;
-                    var get = current_url.indexOf("userState=");
-                    if (get != -1) {
-                        var get_par = current_url.slice("userState=".length + get);
-                        var nextPar = get_par.indexOf("&");
-                        if (nextPar != -1) {
-                            get_par = get_par.slice(0, nextPar);
-                        }
-                        $.ajax({
-                            async: true,
-                            url: "http://lizhi.szer.me/zhanhong/envelope/saveflag.php",
-                            type: "POST",
-                            data: {
-                                uid: uid,
-                                content: flag_content,
-                                newold: get_par,
-                                token: cookie.getCookie("flag2Token")
-                            },
-                            dataType: "jsonp",
-                            jsonp: "callback",
-                            jsonpCallback: "GetMyFlags",
-                            success: function(result, status) {
-                                window.location.href = "./view_new_flag.html?" + "flagid=" + result.retdata + "&src=1&newFlagOrShare=1";
-                            },
-                            error: function() {
-                                callAlert("立Flag出错啦，请联系小知(WithSzu)");
-                                console.log("SubmitFlagError!");
-                            }
+                    if (result.retdata.flag_status == 0 && result.retdata.newold == 1 && result.retdata.feedback == 0) {
+                        // 老用户初次进入
+                        $("#alert_main button").text("好的");
+                        callAlert("一个学期过去了，给你立过的Flag写下感想吧~");
+                    } else if (result.retdata.flag_status == 0 && result.retdata.newold == 1 && result.retdata.feedback == 1) {
+                        // 老用户已写感想
+                        $("#create_flag a img").click(function() {
+                            window.location.href = "../HTML/letter.html?userState=" + userState;
+                        })
+                        $("#my_flag a img").click(function() {
+                            window.location.href = "../HTML/flag_display.html";
+                        })
+                    } else if (result.retdata.flag_status == 1 && result.retdata.newold == 1 && result.retdata.feedback == 1) {
+                        // 老用户已立新Flag
+                        $("#create_flag a img").click(function() {
+                            callAlert("你已经立过新的Flag啦~");
+                        })
+                        $("#my_flag a img").click(function() {
+                            window.location.href = "../HTML/flag_display.html";
+                        })
+                    } else if (result.retdata.flag_status == 0 && result.retdata.newold == 0 && result.retdata.feedback == null) {
+                        // 新用户初次进入
+                        $("#create_flag a img").click(function() {
+                            window.location.href = "../HTML/letter.html?userState=" + userState;
+                        })
+                        $("#my_flag a img").click(function() {
+                            callAlert("你还没有立Flag，没有Flag可以查看哦~");
+                        })
+                    } else if (result.retdata.flag_status == 1 && result.retdata.newold == 0 && result.retdata.feedback == null) {
+                        // 新用户已立Flag
+                        $("#create_flag a img").click(function() {
+                            callAlert("你已经立过新的Flag啦~");
+                        })
+                        $("#my_flag a img").click(function() {
+                            window.location.href = "../HTML/flag_display.html";
                         })
                     } else {
-                        callAlert("初始化立Flag页面错误~请联系小知(WithSzu)")
+                        callAlert("后台返回用户状态出错啦~请联系小知(WithSzu)~");
+                        console.log("jumpError!");
                     }
+                },
+                error: function() {
+                    callAlert("获取状态出错，请联系小知(WithSzu)")
+                    console.log("GetStatusError!");
                 }
-            }
-        })
-
-        // 检测字数是否超限
-        setInterval("checkLength()", 500);
-
-        function checkLength() {
-            var $length = $("#letter_textarea textarea").val().length;
-            if ($length > 117) {
-                var $cut_content = $("#letter_textarea textarea").val();
-                $cut_content = $cut_content.substr(0, 117);
-                $("#letter_textarea textarea").val($cut_content);
-            }
+            })
         }
+
+        $(document).ready(function() {
+            if (cookie.getCookie("flag2Token") == undefined) {
+                var current_url = document.location.href;
+                var get = current_url.indexOf("code=");
+                if (get != -1) {
+                    var get_par = current_url.slice("code=".length + get);
+                    var nextPar = get_par.indexOf("&");
+                    if (nextPar != -1) {
+                        get_par = get_par.slice(0, nextPar);
+                    }
+                    $.ajax({
+                        async: false,
+                        url: "http://lizhi.szer.me/zhanhong/envelope/token.php",
+                        type: "GET",
+                        data: {
+                            code: get_par
+                        },
+                        dataType: "json",
+                        success: function(result, status) {
+                            cookie.setCookie("flag2Token", result.retdata, 7);
+                            setJump(result.retdata);
+                        },
+                        error: function() {
+                            console.log("GetTokenError!");
+                        }
+                    })
+                } else {
+                    // 重定向网址到本页面
+                    var redirect_uri = window.location.href;
+                    var codeUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxde6a9e2fd63767d5&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+                    window.location.href = codeUrl;
+                }
+            } else {
+                setJump(cookie.getCookie("flag2Token"));
+            }
+            initShare();
+        });
     </script>
 
     <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
@@ -294,6 +326,7 @@
             }
         }
     </script>
+
     <script type="text/javascript">
         var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
         document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F55471b6aff2ffa1f9e2ac5cbe755ef91' type='text/javascript'%3E%3C/script%3E"));

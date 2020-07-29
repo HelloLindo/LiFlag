@@ -9,32 +9,10 @@
 </head>
 
 <body>
-    荔知邮政正在为你服务……
-
-
-    <script type="text/javascript">
-        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F55471b6aff2ffa1f9e2ac5cbe755ef91' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=65455601" charset="UTF-8"></script>
-
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script>
-        $(document).ready(function() {
-            var token = $.cookie("token");
-            if (token != undefined) {
-                if ($.cookie("flag_state") == "true") {
-                    window.location.href = "./HTML/index.php";
-                    // 立过Flag的跳转
-                } else {
-                    window.location.href = "./HTML/before_index.php";
-                    // 没立过Flag的跳转
-                }
-            } else {
-                window.location.href = "./loginData.php";
-            }
-        });
+        window.onload = function() {
+            window.location.href = "./HTML/home.html";
+        }
     </script>
 
 </body>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>荔Flag 『深大荔知』</title>
+    <link rel="stylesheet" href="../CSS/display.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+</head>
+
+<body>
+
+    <div id="app">
+        <div id="top_bar">
+            <p>我的Flag</p>
+            <div>
+                <img src="https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/back_button.png">
+            </div>
+        </div>
+        <div id="flags">
+            <!-- <transition-group name="flag_info_animation"> -->
+            <div v-for="flag_info in flag_infos" v-bind:key="flag_info.name">
+                <div class="the_flag" :name="flag_info.name">
+                    <p class="flag_author">From:{{flag_info.nickname}}</p>
+                    <div class="flag_expire">
+                        <img src="https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/expire_icon.png">
+                    </div>
+                    <p class="flag_time">{{flag_info.submission_date}}</p>
+                    <p class="flag_content" @click="viewDetails(flag_info.jumpInfo)">{{flag_info.content}}</p>
+                    <div class="support_button">
+                        <a>
+                            <img :name="flag_info.name" :alt="flag_info.alt" :src="flag_info.src" @click="supportClick($event)">
+                        </a>
+                        <p class="support_num" :name="flag_info.name">{{flag_info.likes}}</p>
+                        <p>支持</p>
+                    </div>
+                </div>
+            </div>
+            <!-- </transition-group> -->
+
+        </div>
+
+        <div id="alert_div" style="display: none;">
+            <div id="alert_main">
+                <img src="https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/alert_icon.png">
+                <p id="alert_content">出错啦o(╥﹏╥)o</p>
+                <button>确 定</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        var cookie = {
+            setCookie: function(key, val, time) { //设置cookie方法
+                var date = new Date(); //获取当前时间
+                var expiresDays = time; //将date设置为n天以后的时间
+                date.setTime(date.getTime() + expiresDays * 24 * 3600 * 1000); //格式化为cookie识别的时间
+                document.cookie = key + "=" + val + ";expires=" + date.toGMTString() + ";path=/"; //设置cookie
+            },
+            getCookie: function(key) { //获取cookie方法
+                /*获取cookie参数*/
+                var getCookie = document.cookie.replace(/[ ]/g, ""); //获取cookie，并且将获得的cookie格式化，去掉空格字符
+                var arrCookie = getCookie.split(";") //将获得的cookie以"分号"为标识 将cookie保存到arrCookie的数组中
+                var tips; //声明变量tips
+                for (var i = 0; i < arrCookie.length; i++) { //使用for循环查找cookie中的tips变量
+                    var arr = arrCookie[i].split("="); //将单条cookie用"等号"为标识，将单条cookie保存为arr数组
+                    if (key == arr[0]) { //匹配变量名称，其中arr[0]是指的cookie名称，如果该条变量为tips则执行判断语句中的赋值操作
+                        tips = arr[1]; //将cookie的值赋给变量tips
+                        break; //终止for循环遍历
+                    }
+                }
+                return tips;
+            },
+            delCookie: function(key) { //删除cookie方法
+                var date = new Date(); //获取当前时间
+                date.setTime(date.getTime() - 10000); //将date设置为过去的时间
+                document.cookie = key + "=v; expires =" + date.toGMTString(); //设置cookie
+            }
+        }
+
+        var callAlert = function(content) {
+            $("#alert_div").css("width", document.body.clientWidth);
+            $("#alert_div").css("height", Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
+            $("#alert_content").text(content);
+            $("#alert_div").show();
+        }
+        $("#alert_main button").click(function() {
+            $("#alert_div").hide();
+        })
+    </script>
+
+    <!-- <script src="https://cdn.bootcss.com/vConsole/3.2.0/vconsole.min.js"></script>
+    <script src="path/to/vconsole.min.js"></script>
+        <script>
+            // init vConsole
+            var  vConsole  =  new  VConsole();  
+            console.log(cookie.getCookie("flag2Token"));
+        </script> -->
+
+    <script>
+        // 以下为逻辑JS代码
+        var allowSupport = true;
+
+        var each_flag = new Vue({
+            el: '#flags',
+            data: {
+                flag_infos: [""],
+                requestlist: undefined,
+            },
+            created() {
+                if (cookie.getCookie("flag2Token") == undefined || cookie.getCookie("flag2Token") == null || cookie.getCookie("flag2Token") == "") {
+                    if (confirm("要登录了才能查看自己的Flag哦~快点击确定到首页登录吧~")) {
+                        window.location.href = "./home.html";
+                    }
+                }
+
+                // 这样才能在jquery中引用vue的data
+                var _self = this;
+                var local_retdata;
+                $.ajax({
+                    async: false,
+                    url: "http://lizhi.szer.me/zhanhong/envelope/getinfo.php",
+                    type: "GET",
+                    data: {
+                        token: cookie.getCookie("flag2Token")
+                    },
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    jsonpCallback: "GetMyFlags",
+                    success: function(result, status) {
+                        local_retdata = result.retdata;
+                        _self.supportCal(local_retdata);
+                        _self.flag_infos = local_retdata;
+                        // _self.requestlist = result.retlist;
+                    },
+                    error: function() {
+                        callAlert("获取个人数据出错啦！请联系小知(WithSzu)")
+                        console.log("GetMyFlagsError!");
+                    }
+                })
+            },
+            methods: {
+                viewDetails: function(jumpInfo) {
+                    var temp = jumpInfo.split("&");
+                    if (temp[0] == 0) {
+                        window.location.href = "./view_new_flag.html?" + "flagid=" + temp[1] + "&src=1";
+                    } else {
+                        window.location.href = "./view_old_flag.html?" + "flagid=" + temp[1] + "&src=1";
+                    }
+                },
+                supportCal: function(retdata) {
+                    if (retdata != null && retdata != undefined) {
+                        for (var j = 0; j < retdata.length; j++) {
+                            retdata[j]["name"] = cookie.getCookie("flag2Token") + "&" + retdata[j].id;
+                            if (retdata[j].bool == 0) {
+                                retdata[j]["alt"] = "点击支持";
+                                retdata[j]["src"] = "https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/support_button.png";
+                            } else {
+                                retdata[j]["alt"] = "已支持";
+                                retdata[j]["src"] = "https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/support_button_clicked.png";
+                            }
+                            if (retdata[j].review == "" || retdata[j].review == null) {
+                                retdata[j]["jumpInfo"] = "0&" + retdata[j].id;
+                            } else {
+                                retdata[j]["jumpInfo"] = "1&" + retdata[j].id;
+                            }
+                        }
+                        return retdata;
+                    } else {
+                        callAlert("获取个人数据出错啦！请联系小知(WithSzu)");
+                    }
+                },
+                supportClick: function(e) {
+                    if (allowSupport) {
+                        allowSupport = false;
+                        var _self = this;
+                        var temp = e.target.name.split("&");
+                        // 这里要换成云存储绝对地址
+                        if (e.target.alt == "点击支持") {
+                            $.ajax({
+                                url: "http://lizhi.szer.me/zhanhong/envelope/thumbUp.php",
+                                type: "POST",
+                                data: {
+                                    flag_id: temp[1],
+                                    token: cookie.getCookie("flag2Token"),
+                                    like: 1
+                                },
+                                dataType: "jsonp",
+                                jsonp: "callback",
+                                jsonpCallback: "GetMyFlags",
+                                success: function(result, status) {
+                                    allowSupport = true;
+                                    e.target.src = "https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/support_button_clicked.png";
+                                    e.target.alt = "已支持";
+                                    $(".support_num[name='" + e.target.name + "']").text(parseInt($(".support_num[name='" + e.target.name + "']").text()) + 1);
+                                },
+                                error: function() {
+                                    allowSupport = true;
+                                    callAlert("点赞出错啦，请联系小知(WithSzu)");
+                                }
+                            })
+                        } else if (e.target.alt == "已支持") {
+                            $.ajax({
+                                url: "http://lizhi.szer.me/zhanhong/envelope/thumbUp.php",
+                                type: "POST",
+                                data: {
+                                    flag_id: temp[1],
+                                    token: cookie.getCookie("flag2Token"),
+                                    like: 0
+                                },
+                                dataType: "jsonp",
+                                jsonp: "callback",
+                                jsonpCallback: "GetMyFlags",
+                                success: function(result, status) {
+                                    allowSupport = true;
+                                    e.target.src = "https://lizhi-1251014091.cos.ap-guangzhou.myqcloud.com/LiFlag/IMAGE_zt/support_button.png";
+                                    e.target.alt = "点击支持";
+                                    $(".support_num[name='" + e.target.name + "']").text(parseInt($(".support_num[name='" + e.target.name + "']").text()) - 1);
+                                },
+                                error: function() {
+                                    allowSupport = true;
+                                    callAlert("取消点赞出错啦，请联系小知(WithSzu)");
+                                }
+                            })
+                        }
+                    }
+                },
+                addFlags: function() {
+                    // 移到最下方后开始加载新Flag
+                    // 这样才能在jquery中引用vue的data
+                    if (this.requestlist != undefined && this.requestlist.length > 0) {
+                        if (this.requestlist.length >= 10) {
+                            var newDataArray = this.requestlist.slice(0, 9);
+                            console.log(newDataArray);
+                            this.requestlist.splice(0, 10);
+                            console.log(this.requestlist);
+                        } else {
+                            var newDataArray = this.requestlist.slice(0, this.requestlist.length);
+                            this.requestlist.splice(0, this.requestlist.length);
+                        }
+
+                        var _self = this;
+                        var local_retdata;
+                        $.ajax({
+                            async: false,
+                            url: "http://lizhi.szer.me/zhanhong/envelope/showinfos.php",
+                            type: "POST",
+                            data: {
+                                token: cookie.getCookie("flag2Token"),
+                                first: 0,
+                                requestlist: newDataArray
+                            },
+                            dataType: "jsonp",
+                            jsonp: "callback",
+                            jsonpCallback: "GetMyFlags",
+                            success: function(result, status) {
+                                local_retdata = result.retdata;
+                                local_retdata = _self.supportCal(local_retdata);
+                                for (var i = 0; i < local_retdata.length; i++) {
+                                    _self.flag_infos.push(local_retdata[i]);
+                                }
+                                ifGetting = false;
+                            },
+                            error: function() {
+                                callAlert("获取广场数据出错啦！请联系小知(WithSzu)")
+                                console.log("GetFlagsError!");
+                                ifGetting = true;
+                            }
+                        })
+                    } else {
+                        callAlert("Flag已经全部加载完了哦~")
+                        ifGetting = true;
+                    }
+                }
+            }
+        })
+
+        var ifGetting = false;
+        window.onscroll = function() {
+            var scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+            var scrollTop = document.documentElement.scrollTop;
+            if (!ifGetting && (scrollHeight - scrollTop) < 660) {
+                ifGetting = true;
+                each_flag.addFlags();
+            }
+        }
+
+        $("#top_bar div").click(function() {
+            window.location.href = "./home.html";
+        })
+    </script>
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script>
+        $(document).ready(function() {
+            initShare();
+        });
+        var initShare = function() {
+            var share_url = decodeURI(window.location.href);
+            var s_appId = "";
+            var s_nonceStr = "";
+            var s_timestamp = "";
+            var s_signature = "";
+            var s_jsApiList = [""];
+            var getsign_state = false;
+
+            $.ajax({
+                url: "http://lizhi.szer.me/zhanhong/envelope/stApp/share/get_signpakage.php",
+                type: "GET",
+                dataType: "JSON",
+                data: {
+                    current_url: share_url
+                },
+                success: function(data, status) {
+                    s_appId = data.appId;
+                    s_nonceStr = data.nonceStr;
+                    s_timestamp = data.timestamp;
+                    s_signature = data.signature;
+                    s_jsApiList = [
+                        "checkJsApi",
+                        "onMenuShareTimeline",
+                        "onMenuShareAppMessage"
+                    ];
+                    getsign_state = true;
+                },
+                error: function() {
+                    callAlert("分享Flag时出错啦！请联系小知(WithSzu)");
+                },
+                async: false
+            });
+
+            if (getsign_state) {
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: s_appId, // 必填，公众号的唯一标识
+                    timestamp: s_timestamp, // 必填，生成签名的时间戳
+                    nonceStr: s_nonceStr, // 必填，生成签名的随机串
+                    signature: s_signature, // 必填，签名
+                    jsApiList: s_jsApiList // 必填，需要使用的JS接口列表
+                });
+                wx.ready(function() {
+                    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，
+                    // 所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+                    wx.onMenuShareAppMessage({
+                        title: "荔Flag – 『深大荔知』",
+                        desc: "荔Flag第二期上线啦！快来和我一起立吹不倒的Flag吧！",
+                        link: "http://lizhi.szer.me/yuling/HTML/home.html",
+                        imgUrl: "http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/share_img.jpg",
+                        trigger: function(res) {
+                            // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+                        },
+                        success: function(res) {
+                            callAlert("分享成功~");
+                        },
+                        cancel: function(res) {},
+                        fail: function(res) {
+                            callAlert("好像分享出了点问题哦~请截图并联系小知~\n" + JSON.stringify(res));
+                        }
+                    });
+                    wx.onMenuShareTimeline({
+                        title: "荔Flag – 『深大荔知』", // 分享标题
+                        link: "http://lizhi.szer.me/flag/", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: "http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/share_img.jpg", // 分享图标
+                        success: function() {
+                            callAlert("分享成功");
+                            // 用户确认分享后执行的回调函数
+                        },
+                        cancel: function() {
+                            // 用户取消分享后执行的回调函数
+                        }
+                    });
+                });
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F55471b6aff2ffa1f9e2ac5cbe755ef91' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=66062675" charset="UTF-8"></script>
+</body>
+
+</html>

@@ -1,0 +1,186 @@
+* {
+    font-family: "黑体", SimHei, Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #000000;
+}
+
+body {
+    font-size: 62.5%;
+    background-color: #eddbdb;
+}
+
+#top_bar {
+    z-index: 100;
+    position: fixed;
+    top: 0px;
+    background-image: url("../IMAGE/top_bar.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    height: 55px;
+    width: 100%;
+    text-align: center;
+}
+
+#top_bar div {
+    float: left;
+    position: relative;
+    bottom: 38px;
+    width: 10%;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+#top_bar p {
+    margin: 5px auto 0px auto;
+    /* margin: 13px auto 0px auto; */
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #87110d;
+}
+
+#top_bar div img {
+    width: 30px;
+    cursor: pointer;
+}
+
+#flags {
+    margin-top: 60px;
+    height: auto;
+}
+
+
+/* 新加载flag的从下往上移的效果 */
+
+.flag_info_animation-enter-active,
+.flag_info_animation-leave-active {
+    transition: all 0.5s;
+}
+
+.flag_info_animation-enter,
+.flag_info_animation-leave-to {
+    transform: translateY(5px);
+}
+
+.the_flag {
+    width: 95%;
+    height: 115px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    background-image: url("../IMAGE/each_flag_background.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding: 20px 5px 22px 22px;
+    /* padding: 22px 5px 22px 22px; */
+    overflow: hidden;
+}
+
+.flag_author,
+.flag_time {
+    width: 85px;
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #000000;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.flag_expire {
+    display: inline-block;
+}
+
+.flag_expire img {
+    visibility: hidden;
+    width: 40px;
+    height: 17px;
+}
+
+.flag_time {
+    margin-left: 50px;
+}
+
+.flag_content {
+    width: 80%;
+    height: 54px;
+    /* margin-top: 3px; */
+    /* margin-top: 10px; */
+    font-size: 0.76rem;
+    color: #171250;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.support_button {
+    float: right;
+    position: relative;
+    bottom: 70px;
+    right: 7px;
+}
+
+.support_button a img {
+    width: 35px;
+    height: 35px;
+}
+
+.support_button p {
+    margin-top: 1px;
+    margin-bottom: 2px;
+    width: 100%;
+    text-align: center;
+    color: #dc505b;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+
+/* 警告框 */
+
+#alert_div {
+    z-index: 999;
+    float: left;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(166, 166, 166, 0.6);
+    text-align: center;
+}
+
+#alert_main {
+    position: fixed;
+    top: 35%;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    width: 240px;
+    height: 170px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+#alert_main img {
+    width: 60px;
+    height: 60px;
+    margin-top: 5%;
+}
+
+#alert_content {
+    margin: 0;
+    margin-bottom: 30px;
+}
+
+#alert_main button {
+    width: 40%;
+    height: 15%;
+    color: white;
+    background-color: rgb(24, 138, 246);
+    outline: none;
+    border-radius: 5px;
+    border: none;
+}

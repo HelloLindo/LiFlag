@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>荔Flag 『深大荔知』</title>
+    <link rel="stylesheet" href="../CSS/letter.css" type="text/css">
+</head>
+
+<body>
+
+    <div class="letter_frame">
+
+        <div id="letter">
+            <div id="profile_o">
+                <img alt="头像" src="http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/profile.png" onerror="javascript: window.location.href='../index.html'">
+            </div>
+
+            <div id="letter_textarea">
+                <textarea name="letter_text_disabled" autofocus="autofocus" readonly="readonly">正在获取Flag内容...</textarea>
+            </div>
+
+            <!-- <div id="inscribe">
+                <p id="name">
+                    From:
+                    <span>正在获取用户名称</span>
+                </p>
+                <p id="date">
+                    <span>正在获取时间</span>
+                </p>
+            </div> -->
+
+            <div id="author_comment">
+                <img class="split_bar" src="../IMAGE/split_bar.png">
+                <p id="the_comment">
+                    作者感言：
+                </p>
+                <p id="completion_degree">
+                    完成度：
+                </p>
+                <div id="completion_stars">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div id="comment_content">
+                    <textarea placeholder="写下你的感想吧，别忘了在完成度打个星噢！"></textarea>
+                </div>
+                <div id="submit_button">
+                    <button></button>
+                </div>
+            </div>
+
+            <div id="bottom">
+                <p style="position: relative; left: 45px;">如需帮助或反馈&nbsp;请加小知微信：WithSzu</p>
+                <p>Copyright&copy;深大荔知</p>
+                <!-- <br> -->
+                <!-- <p id="author">
+                    Lindo &amp; J1MMY &amp; ckjim &amp; 佚名
+                </p> -->
+            </div>
+        </div>
+
+        <div id="postmark">
+            <img alt="邮戳" src="http://lizhi-1251014091.cosgz.myqcloud.com/LiFlag/IMAGE/postmark.png">
+        </div>
+
+    </div>
+
+    <div id="alert_div" style="display: none;">
+        <div id="alert_main">
+            <img src="../IMAGE/alert_icon.png">
+            <p id="alert_content">出错啦o(╥﹏╥)o</p>
+            <button>确 定</button>
+        </div>
+    </div>
+
+    <!-- <script type="text/javascript">
+        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cscript src='" + _bdhmProtocol +
+            "hm.baidu.com/h.js%3F55471b6aff2ffa1f9e2ac5cbe755ef91' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=65455601" charset="UTF-8"></script> -->
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script> -->
+    <script>
+        var cookie = {
+            setCookie: function(key, val, time) { //设置cookie方法
+                var date = new Date(); //获取当前时间
+                var expiresDays = time; //将date设置为n天以后的时间
+                date.setTime(date.getTime() + expiresDays * 24 * 3600 * 1000); //格式化为cookie识别的时间
+                document.cookie = key + "=" + val + ";expires=" + date.toGMTString() + ";path=/"; //设置cookie
+            },
+            getCookie: function(key) { //获取cookie方法
+                /*获取cookie参数*/
+                var getCookie = document.cookie.replace(/[ ]/g, ""); //获取cookie，并且将获得的cookie格式化，去掉空格字符
+                var arrCookie = getCookie.split(";") //将获得的cookie以"分号"为标识 将cookie保存到arrCookie的数组中
+                var tips; //声明变量tips
+                for (var i = 0; i < arrCookie.length; i++) { //使用for循环查找cookie中的tips变量
+                    var arr = arrCookie[i].split("="); //将单条cookie用"等号"为标识，将单条cookie保存为arr数组
+                    if (key == arr[0]) { //匹配变量名称，其中arr[0]是指的cookie名称，如果该条变量为tips则执行判断语句中的赋值操作
+                        tips = arr[1]; //将cookie的值赋给变量tips
+                        break; //终止for循环遍历
+                    }
+                }
+                return tips;
+            },
+            delCookie: function(key) { //删除cookie方法
+                var date = new Date(); //获取当前时间
+                date.setTime(date.getTime() - 10000); //将date设置为过去的时间
+                document.cookie = key + "=v; expires =" + date.toGMTString(); //设置cookie
+            }
+        }
+
+        var callAlert = function(content) {
+            $("#alert_div").css("width", document.body.clientWidth);
+            // $("#alert_div").css("height", window.screen.height);
+            $("#alert_div").css("height", document.body.scrollHeight);
+            $("#alert_content").text(content);
+            $("#alert_div").show();
+        }
+        $("#alert_main button").click(function() {
+            $("#alert_div").hide();
+        })
+    </script>
+
+    <!-- <script src="https://cdn.bootcss.com/vConsole/3.2.0/vconsole.min.js"></script>
+    <script src="path/to/vconsole.min.js"></script>
+        <script>
+            // init vConsole
+            var  vConsole  =  new  VConsole();  
+            console.log(cookie.getCookie("flag2Token"));
+        </script> -->
+
+    <script>
+        var star_count = -1;
+        var uid = -1;
+        $(document).ready(function() {
+            console.log(cookie.getCookie("flag2Token"));
+            $.ajax({
+                async: false,
+                url: "http://lizhi.szer.me/zhanhong/envelope/getinfo.php",
+                type: "GET",
+                data: {
+                    token: cookie.getCookie("flag2Token")
+                },
+                dataType: "jsonp",
+                jsonp: "callback",
+                jsonpCallback: "GetMyFlags",
+                success: function(result, status) {
+                    if (result.retdata[0].review != "") {
+                        window.location.href = "./home.html";
+                    }
+                    $("#profile_o img").attr("src", result.retdata[0].headimgurl);
+                    $("#letter_textarea textarea").val(result.retdata[0].content);
+                    uid = result.retdata[0].id;
+                },
+                error: function() {
+                    callAlert("获取旧Flag出错啦，请联系小知(MeetSzu)");
+                    console.log("GetOldFlagError!");
+                }
+            })
+        });
+
+        $("#completion_stars div").click(function() {
+            var index = $("#completion_stars div").index(this);
+            $("#completion_stars div").css("background-image", 'url("../IMAGE/star_empty.png")');
+            for (var i = 0; i <= index; i++) {
+                $("#completion_stars div").eq(i).css("background-image", 'url("../IMAGE/star_fill.png")');
+            }
+            star_count = index; // 星星数量，即完成度
+        })
+
+        $("#submit_button button").click(function() {
+            if ($("#comment_content textarea").val() == "") {
+                callAlert("感想是要有内容的哦");
+            } else if (star_count < 0) {
+                callAlert("请点击小星星填写一下完成度哦");
+            } else {
+                $.ajax({
+                    url: "http://lizhi.szer.me/zhanhong/envelope/feedback.php",
+                    type: "POST",
+                    data: {
+                        uid: uid,
+                        review: $("#comment_content textarea").val(),
+                        completion: star_count,
+                        token: cookie.getCookie("flag2Token")
+                    },
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    jsonpCallback: "GetMyFlags",
+                    success: function(result, status) {
+                        if (result.retcode == 200200) {
+                            window.location.href = "./view_old_flag.html?flagid=" + uid + "&src=1";
+                        } else {
+                            callAlert("提交出错啦(" + result.retcode + ")，请联系小知(MeetSzu)")
+                        }
+                    },
+                    error: function() {
+                        callAlert("提交感想出错啦，请联系小知(MeetSzu)")
+                    }
+                })
+            }
+
+        })
+    </script>
+    <script type="text/javascript">
+        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F55471b6aff2ffa1f9e2ac5cbe755ef91' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=66062675" charset="UTF-8"></script>
+</body>
+
+</html>
